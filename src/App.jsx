@@ -7,7 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { loading: true };
-    this.onNewPost = this.onNewPost.bind(this);
+    this.addMessage = this.addMessage.bind(this);
   }
 
   componentDidMount() {
@@ -41,9 +41,14 @@ class App extends Component {
       // Calling setState will trigger a call to render() in App and all child components.
       this.setState({ messages: messages });
     }, 3000);
+    let socket = new WebSocket("ws://localhost:3001");
+    socket.onopen = () => {
+      console.log("OPENED CONNECTION");
+    };
+    this.socket = webSocket;
   }
 
-  onNewPost(content, username) {
+  addMessage(content, username) {
     this.setState({
       messages: this.state.messages.concat({
         id: this.state.messages.length + 1,
@@ -66,7 +71,7 @@ class App extends Component {
           </nav>
           <Message messages={this.state.messages} />
           <MessageList messages={this.state.messages} />
-          <ChatBar user={this.state.currentUser} onNewPost={this.onNewPost} />
+          <ChatBar user={this.state.currentUser} addMessage={this.addMessage} />
         </div>
       );
     }

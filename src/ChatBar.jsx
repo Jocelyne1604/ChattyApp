@@ -20,7 +20,7 @@ class ChatBar extends Component {
   onInputKeyDown(event) {
     if (event.key == "Enter") {
       var username = this.state.username;
-      this.props.onNewPost(event.target.value, username);
+      this.props.addMessage(event.target.value, username);
       this.setState({ content: "" });
     }
   }
