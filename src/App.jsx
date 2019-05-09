@@ -15,19 +15,7 @@ class App extends Component {
       this.setState({
         loading: false,
         currentUser: { name: "Bob" }, // optional. if currentUser is not defined, it means the user is Anonymous
-        messages: [
-          {
-            id: 1,
-            username: "Bob",
-            content: "Has anyone seen my marbles?"
-          },
-          {
-            id: 2,
-            username: "Anonymous",
-            content:
-              "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-          }
-        ]
+        messages: []
       });
       console.log("Simulating incoming message");
       // Add a new message to the list of messages in the data store
@@ -41,11 +29,20 @@ class App extends Component {
       // Calling setState will trigger a call to render() in App and all child components.
       this.setState({ messages: messages });
     }, 3000);
-    let socket = new WebSocket("ws://localhost:3001");
-    socket.onopen = () => {
-      console.log("OPENED CONNECTION");
+
+    var webSocket = new WebSocket("ws://localhost:3001");
+    webSocket.onopen = function(event) {
+      console.log("Connected to server");
     };
+    //Store webSocket in this.socket.
     this.socket = webSocket;
+
+    this.socket.onmessage = event => {
+      console.log(event);
+      this.setState({
+        messages: this.state.messages.concat(JSON.parse(event.data))
+      });
+    };
   }
 
   addMessage(content, username) {
@@ -56,6 +53,12 @@ class App extends Component {
         content: content
       })
     });
+    this.socket.send(
+      JSON.stringify({
+        username: username || this.state.currentUser.name,
+        content: content
+      })
+    );
   }
 
   render() {
