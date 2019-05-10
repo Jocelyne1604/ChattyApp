@@ -40,7 +40,7 @@ body {
   padding: 5px;
 }
 
-.message.system {
+.message-system {
   font-style: italic;
   padding: 5px 20px;
 }
@@ -82,4 +82,10 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.onlineUser {
+  position: relative;
+  float: right;
+  padding-top: 35px;
 }

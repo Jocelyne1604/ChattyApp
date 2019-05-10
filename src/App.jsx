@@ -7,23 +7,26 @@ class App extends Component {
   // Set initial state so the component is initially "loading"
   constructor(props) {
     super(props);
-    this.state = { loading: true };
+    this.state = {
+      loading: true,
+      onlineUser: 0,
+      currentUser: { name: "Anonymous" }, // optional. if currentUser is not defined, it means the user is Anonymous
+      messages: []
+    };
     this.addMessage = this.addMessage.bind(this);
   }
 
   componentDidMount() {
     setTimeout(() => {
       this.setState({
-        loading: false,
-        currentUser: { name: "" }, // optional. if currentUser is not defined, it means the user is Anonymous
-        messages: []
+        loading: false
       });
       console.log("Simulating incoming message");
       // Add a new message to the list of messages in the data store
       const newMessage = {
-        id: 3,
-        username: "Michelle",
-        content: "Hello there!",
+        id: "",
+        username: "",
+        content: "",
         type: "incomingMessage"
       };
       const messages = this.state.messages.concat(newMessage);
@@ -36,16 +39,26 @@ class App extends Component {
     webSocket.onopen = function(event) {
       console.log("Connected to server");
     };
+
     //Store webSocket in this.socket.
     this.socket = webSocket;
 
     this.socket.onmessage = event => {
       console.log(event);
-      this.setState({
-        messages: this.state.messages.concat(JSON.parse(event.data))
-      });
+      const data = JSON.parse(event.data);
+      if (data.type == "newUserCount") {
+        this.setState({
+          onlineUser: data.data
+        });
+        console.log(this.state);
+        console.log("test1 " + this.state.onlineUser);
+        // console.log("test2" + data);
+      }
+      // this.setState({
+      //   messages: this.state.messages.concat(JSON.parse(event.data))
+      // });
       console.log("componentDidMount <App />");
-      this.socket = new WebSocket("ws://localhost:3001");
+      // this.socket = new WebSocket("ws://localhost:3001");
 
       this.socket.onopen = event => {
         console.log("Connected to server");
@@ -62,6 +75,11 @@ class App extends Component {
             break;
           case "incomingNotification":
             this.setState({ messages: this.state.messages.concat(data) });
+            break;
+          case "newUserCount":
+            this.setState({
+              onlineUser: data.data
+            });
             break;
           default:
             this.setState({ error: "error" });
@@ -105,7 +123,10 @@ class App extends Component {
             <a href="/" className="navbar-brand">
               Chatty
             </a>
-            <span># people online</span>
+            <span className="onlineUser">
+              {" "}
+              {this.state.onlineUser} user online
+            </span>
           </nav>
           <MessageList messages={this.state.messages} />
           <ChatBar

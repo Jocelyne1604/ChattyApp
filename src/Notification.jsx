@@ -4,7 +4,7 @@ class Notification extends Component {
   render() {
     return (
       <div className="notification">
-        <span className="notification-content">
+        <span className="message-system">
           {this.props.message.oldName} Changed their name to{" "}
           {this.props.message.newName}
         </span>
