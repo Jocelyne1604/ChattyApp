@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import ChatBar from "./ChatBar.jsx";
 import Message from "./Message.jsx";
 import MessageList from "./MessageList.jsx";
+import Navbar from "./Nav.jsx";
 import { WSASERVICE_NOT_FOUND } from "constants";
+
 class App extends Component {
   // Set initial state so the component is initially "loading"
   constructor(props) {
@@ -119,15 +121,7 @@ class App extends Component {
     } else {
       return (
         <div>
-          <nav className="navbar">
-            <a href="/" className="navbar-brand">
-              Chatty
-            </a>
-            <span className="onlineUser">
-              {" "}
-              {this.state.onlineUser} user online
-            </span>
-          </nav>
+          <Navbar onlineUser={this.state.onlineUser} />
           <MessageList messages={this.state.messages} />
           <ChatBar
             user={this.state.currentUser}
