@@ -1,5 +1,4 @@
-React Boilerplate
-=====================
+# React Boilerplate
 
 A minimal and light dev environment for ReactJS.
 
@@ -39,7 +38,11 @@ npm run lint
 
 ### Dependencies
 
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+- React
+- Webpack
+- [babel-loader](https://github.com/babel/babel-loader)
+- [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+
+## Screenshot
+
+![Alt text](img/Chattyshot.png "ChattyApp Screenshot")
