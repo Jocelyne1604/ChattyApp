@@ -46,15 +46,11 @@ class App extends Component {
     this.socket = webSocket;
 
     this.socket.onmessage = event => {
-      console.log(event);
       const data = JSON.parse(event.data);
       if (data.type == "newUserCount") {
         this.setState({
           onlineUser: data.data
         });
-        console.log(this.state);
-        console.log("test1 " + this.state.onlineUser);
-        // console.log("test2" + data);
       }
       // this.setState({
       //   messages: this.state.messages.concat(JSON.parse(event.data))
@@ -67,7 +63,6 @@ class App extends Component {
       };
 
       this.socket.onmessage = event => {
-        console.log(event);
         // The socket event data is encoded as a JSON string.
         // This line turns it into an object
         const data = JSON.parse(event.data);
@@ -92,7 +87,6 @@ class App extends Component {
   }
 
   showNotification = message => {
-    console.log("im here" + message);
     this.socket.send(
       JSON.stringify({
         type: "postNotification",

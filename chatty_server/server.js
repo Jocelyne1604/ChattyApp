@@ -29,9 +29,7 @@ wss.on("connection", ws => {
     client.send(userCountMessage);
   });
 
-  console.log("connection" + wss.clients.size);
   ws.on("message", function incoming(message) {
-    console.log("received: ", message);
     let parsed = JSON.parse(message);
     parsed.id = uuidv4();
     if (parsed.type == "postNotification") {
@@ -44,14 +42,11 @@ wss.on("connection", ws => {
 
     wss.clients.forEach(client => {
       let message = JSON.stringify(parsed);
-      console.log(message);
       client.send(message);
     });
   });
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on("close", () => {
-    console.log("Client disconnected");
-    console.log(wss.clients.size);
     wss.clients.forEach(client => {
       let userCountMessage = JSON.stringify({
         type: "newUserCount",
